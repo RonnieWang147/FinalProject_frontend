@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   Button,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import { LoginSubmit } from '../util/My_api';
@@ -14,9 +15,9 @@ export default class LoginScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      token: null,
       username: "",
       password: "",
+      wariningMsg: ""
     }
   }
   static navigationOptions = {
@@ -26,8 +27,7 @@ export default class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container1}>
-          <Text>Welcome!</Text>
+          <Text style={styles.title}>Welcome!</Text>
           <TextInput
           style={styles.textInput}
           onChangeText={(username) => this.setState({username})}
@@ -38,60 +38,75 @@ export default class LoginScreen extends React.Component {
           onChangeText={(password) => this.setState({password})}
           value={this.state.password}
           />
-          <Button title="Forget password?" onPress={this._forget} />
           <TouchableOpacity style={styles.btn} onPress={this._signInAsync}>
             <Text style={styles.loginText}>Login</Text>
           </TouchableOpacity>
-        </View>
+          <Button title="Forget password?" onPress={this._forget} />
       </View>
     );
   }
 
+  resetState(){
+    this.setState({
+      username: "",
+      password: "",
+    })
+  }
   _forget =  () => {
     this.props.navigation.navigate('SignUp');
   }
   _signInAsync = async () => {
-    // await AsyncStorage.setItem('userToken', );
+    
     this.props.navigation.navigate('Main');
+    // const data = await LoginSubmit(this.state.username, this.state.password);
+    // console.log(JSON.stringify(data));
+    // if(data&&data.rc===1){
+    //   await AsyncStorage.clear();
+    //   await AsyncStorage.setItem('jwt', data.token);
+    //   // await AsyncStorage.setItem('refreshtoken', data.reftkn);
+    //   await AsyncStorage.setItem('username', data.username);
+      
+    //   this.props.navigation.navigate('Main');
+    // }
+    // else{
+    //   this.resetState();
+    //   this.setState({
+    //     wariningMsg: data.msg
+    //   });
+    // }
   };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: '50%',
+    paddingTop: '40%',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#9DD6EB',
+    // justifyContent: 'center',
   },
-  container1: {
-    // flex: 1,
-    // paddingTop: '10%',
-    height: 200,
-    width: '80%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
+  title: {
+    color: '#92BBD9',
+    fontSize: 30,
+    fontWeight: 'bold',
   },
   textInput: {
-    height: 40, 
-    width: '80%', 
+    fontSize: 20,
+    height: 50, 
+    width: '90%', 
     borderColor: 'gray', 
     borderBottomWidth: 1
   },
   btn: {
+    backgroundColor: '#3a3ca1',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 10,
-    width: '80%',
+    width: '90%',
     padding: 10,
-    borderWidth: 1,
-    borderColor: '#9DD6EB',
-    borderRadius: 3
+    borderRadius: 2
   },
   loginText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#AAAAAA'
+    fontSize: 15,
+    color: '#FFFFFF'
   }
 });

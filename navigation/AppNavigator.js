@@ -22,6 +22,6 @@ export default createAppContainer(createSwitchNavigator({
   Map: MapScreen,
 },
 {
-  initialRouteName: 'AuthLoading',
+  initialRouteName: 'Swiper',
 }
 ));

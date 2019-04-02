@@ -77,6 +77,7 @@ export default class screens extends Component {
     this.animation = new Animated.Value(0);
   }
   render() {
+    return null;
     return (
       <View style={styles.container}>
         <MapView
